@@ -31,4 +31,7 @@ const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
+  console.log("DATABASE_URL:", process.env.DATABASE_URL ? "FOUND" : "MISSING");
+console.log("JWT_SECRET:", process.env.JWT_SECRET ? "FOUND" : "MISSING");
+console.log("DIRECT_URL:", process.env.DIRECT_URL ? "FOUND" : "MISSING");
 });
