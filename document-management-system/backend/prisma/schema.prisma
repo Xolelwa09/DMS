@@ -1,0 +1,39 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id        Int        @id @default(autoincrement())
+  name      String
+  email     String     @unique
+  password  String
+  role      String
+
+  documents Document[]
+}
+
+model Document {
+  id             Int      @id @default(autoincrement())
+
+  documentType   String
+  fileName       String
+  filePath       String
+
+  vendor         String?
+  invoiceNumber  String?
+  amount         Float?
+  vat            Float?
+
+  status         String   @default("Pending")
+
+  uploadedById   Int
+  uploadedBy     User     @relation(fields: [uploadedById], references: [id])
+
+  createdAt      DateTime @default(now())
+}
