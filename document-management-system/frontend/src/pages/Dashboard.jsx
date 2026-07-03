@@ -37,7 +37,7 @@ function Dashboard() {
 </Link>
 
 
-        <Link to="/upload" className="card">
+        <Link to="/documents" className="card">
 
     <div className="card-icon">📄 </div>
 
@@ -54,7 +54,7 @@ function Dashboard() {
 
 </Link>
 
-           <Link to="/upload" className="card">
+           <Link to="/reports" className="card">
 
     <div className="card-icon">📊 </div>
 
