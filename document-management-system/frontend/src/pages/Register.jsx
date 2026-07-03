@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../styles/auth.css";
+import "../styles/login.css";
 
 function Register() {
   const navigate = useNavigate();

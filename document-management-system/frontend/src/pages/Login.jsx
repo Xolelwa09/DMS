@@ -53,38 +53,44 @@ function Login() {
   };
 
   return (
-    <div style={{ padding: "50px" }}>
-      <h1>Login</h1>
+  <div className="login-page">
+    <div className="login-card">
+      <h1>Document Management System</h1>
+      <p className="subtitle">
+        Sign in to continue
+      </p>
 
       <form onSubmit={handleSubmit}>
-        <div>
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            onChange={handleChange}
-          />
-        </div>
+        <input
+          type="email"
+          name="email"
+          placeholder="Email Address"
+          onChange={handleChange}
+          required
+        />
 
-        <br />
-
-        <div>
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            onChange={handleChange}
-          />
-        </div>
-
-        <br />
+        <input
+          type="password"
+          name="password"
+          placeholder="Password"
+          onChange={handleChange}
+          required
+        />
 
         <button type="submit">
-          Login
-        </button>
+  Login
+</button>
+
+<p className="register-link">
+  Don't have an account?{" "}
+  <span onClick={() => navigate("/register")}>
+    Register
+  </span>
+</p>
       </form>
     </div>
-  );
+  </div>
+);
 }
 
 export default Login;
