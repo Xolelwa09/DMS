@@ -196,6 +196,7 @@ function Documents() {
             <th >Type</th>
             <th >File Name</th>
             <th >Status</th>
+            <th>Uploaded By</th>
             <th >Vendor</th>
             <th >Invoice Number</th>
             <th >Amount</th>
@@ -230,6 +231,11 @@ function Documents() {
               <td >
                 {doc.vendor || "-"}
               </td>
+              <td>
+  {doc.uploadedBy?.name || "-"}
+</td>
+
+
               <td >
                 {doc.invoiceNumber || "-"}
               </td>

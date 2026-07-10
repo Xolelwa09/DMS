@@ -227,13 +227,21 @@ exports.getDocuments = async (req, res) => {
     // Reviewer sees only Stage 1 documents
     else if (role === "reviewer") {
   documents = await prisma.document.findMany({
-    where: {
-      status: "Pending Stage 1",
+  where: {
+    status: "Pending Stage 1",
+  },
+  include: {
+    uploadedBy: {
+      select: {
+        name: true,
+        email: true,
+      },
     },
-    orderBy: {
-      createdAt: "desc",
-    },
-  });
+  },
+  orderBy: {
+    createdAt: "desc",
+  },
+});
 
   console.log("Reviewer sees:", documents.length);
 }
@@ -244,6 +252,14 @@ exports.getDocuments = async (req, res) => {
         where: {
           status: "Pending Stage 2",
         },
+        include: {
+    uploadedBy: {
+      select: {
+        name: true,
+        email: true,
+      },
+    },
+  },
         orderBy: {
           createdAt: "desc",
         },
@@ -256,6 +272,14 @@ exports.getDocuments = async (req, res) => {
         where: {
           status: "Pending Stage 3",
         },
+        include: {
+    uploadedBy: {
+      select: {
+        name: true,
+        email: true,
+      },
+    },
+  },
         orderBy: {
           createdAt: "desc",
         },
@@ -264,12 +288,21 @@ exports.getDocuments = async (req, res) => {
 
     // Admin sees everything
     else if (role === "admin") {
-      documents = await prisma.document.findMany({
-        orderBy: {
-          createdAt: "desc",
+  documents = await prisma.document.findMany({
+    include: {
+      uploadedBy: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
         },
-      });
-    }
+      },
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+}
 
     else {
       documents = [];
