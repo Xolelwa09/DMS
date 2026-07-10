@@ -84,7 +84,13 @@ function Documents() {
 
   return (
     <div className="documents">
-      <h2>📄 Documents</h2>
+     <h2>
+  {role === "user" && "📄 My Documents"}
+  {role === "reviewer" && "✅ Documents Awaiting Review"}
+  {role === "manager" && "📋 Documents Awaiting Manager Approval"}
+  {role === "finance" && "💰 Documents Awaiting Finance Approval"}
+  {role === "admin" && "📄 All Documents"}
+</h2>
 
 <div className="summary-cards">
 

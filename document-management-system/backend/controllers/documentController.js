@@ -206,16 +206,12 @@ exports.updateDocumentStatus = async (req, res) => {
 
 exports.getDocuments = async (req, res) => {
   try {
-    console.log("REQ.USER:", req.user);
-
     const role = req.user.role?.toLowerCase();
     const userId = req.user.id;
 
-    console.log("ROLE:", role);
-    console.log("USER ID:", userId);
-
     let documents;
 
+    // User sees only their own documents
     if (role === "user") {
       documents = await prisma.document.findMany({
         where: {
@@ -225,16 +221,55 @@ exports.getDocuments = async (req, res) => {
           createdAt: "desc",
         },
       });
+    }
 
-      console.log("USER DOCUMENTS:", documents.length);
-    } else {
+    // Reviewer sees only Stage 1 documents
+    else if (role === "reviewer") {
+      documents = await prisma.document.findMany({
+        where: {
+          status: "Pending Stage 1",
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+      });
+    }
+
+    // Manager sees only Stage 2 documents
+    else if (role === "manager") {
+      documents = await prisma.document.findMany({
+        where: {
+          status: "Pending Stage 2",
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+      });
+    }
+
+    // Finance sees only Stage 3 documents
+    else if (role === "finance") {
+      documents = await prisma.document.findMany({
+        where: {
+          status: "Pending Stage 3",
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+      });
+    }
+
+    // Admin sees everything
+    else if (role === "admin") {
       documents = await prisma.document.findMany({
         orderBy: {
           createdAt: "desc",
         },
       });
+    }
 
-      console.log("ALL DOCUMENTS:", documents.length);
+    else {
+      documents = [];
     }
 
     res.json(documents);
