@@ -202,28 +202,7 @@ exports.updateDocumentStatus = async (req, res) => {
     });
   }
 };
-    const updatedDocument = await prisma.document.update({
-      where: {
-        id: Number(id),
-      },
-      data: {
-        status: newStatus,
-      },
-    });
-
-    res.json({
-      message: "Document status updated.",
-      document: updatedDocument,
-    });
-
-  } catch (error) {
-    console.error(error);
-
-    res.status(500).json({
-      message: "Failed to update document status.",
-    });
-  }
-};
+    
 
 exports.getDocuments = async (req, res) => {
   try {
