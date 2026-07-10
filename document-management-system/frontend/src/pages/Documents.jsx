@@ -270,11 +270,13 @@ function Documents() {
   {(() => {
     
 
-    console.log({
-      id: doc.id,
-      status,
-      role,
-    });
+    const status = doc.status;
+
+console.log({
+  id: doc.id,
+  status,
+  role,
+});
 
     // Reviewer - Stage 1
     if (status === "Pending Stage 1" && role === "reviewer") {

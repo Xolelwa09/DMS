@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "../services/api";
 import "../styles/auth.css";
 import "../styles/login.css";
 
@@ -11,7 +11,7 @@ function Register() {
     name: "",
     email: "",
     password: "",
-    role: "reviewer",
+    role: "user",
   });
 
   const [message, setMessage] = useState("");
@@ -20,10 +20,10 @@ function Register() {
     e.preventDefault();
 
     try {
-      const res = await axios.post(
-        "http://localhost:5000/api/auth/register",
-        form
-      );
+      const res = await api.post(
+  "/auth/register",
+  form
+);
 
       setMessage(res.data.message);
 
@@ -73,15 +73,17 @@ function Register() {
         />
 
         <select
-          value={form.role}
-          onChange={(e)=>
-            setForm({...form,role:e.target.value})
-          }
-        >
-          <option value="reviewer">Reviewer</option>
-          <option value="manager">Manager</option>
-          <option value="finance">Finance</option>
-        </select>
+  value={form.role}
+  onChange={(e)=>
+    setForm({...form,role:e.target.value})
+  }
+>
+  <option value="user">User</option>
+  <option value="reviewer">Reviewer</option>
+  <option value="manager">Manager</option>
+  <option value="finance">Finance</option>
+  <option value="admin">Admin</option>
+</select>
 
         <button>Create Account</button>
 

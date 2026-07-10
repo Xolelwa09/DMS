@@ -32,6 +32,10 @@ function Login() {
         response.data.token
       );
 
+      console.log(response.data);
+console.log(response.data.user);
+console.log(response.data.user.role);
+
       localStorage.setItem(
         "role",
         response.data.user.role
