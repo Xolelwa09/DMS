@@ -120,7 +120,7 @@ exports.updateDocumentStatus = async (req, res) => {
       });
     }
 
-    const userRole = req.user.role;
+    const userRole = req.user.role?.toLowerCase();
 
     let newStatus = document.status;
 
@@ -134,7 +134,7 @@ exports.updateDocumentStatus = async (req, res) => {
       status === "Approved" &&
       document.status === "Pending Stage 1"
     ) {
-      if (userRole !== "Reviewer") {
+      if (userRole !== "reviewer") {
         return res.status(403).json({
           message: "Only Reviewers can approve Stage 1",
         });
@@ -148,7 +148,7 @@ exports.updateDocumentStatus = async (req, res) => {
       status === "Approved" &&
       document.status === "Pending Stage 2"
     ) {
-      if (userRole !== "Manager") {
+      if (userRole !== "manager") {
         return res.status(403).json({
           message: "Only Managers can approve Stage 2",
         });
@@ -163,12 +163,11 @@ exports.updateDocumentStatus = async (req, res) => {
       document.status === "Pending Stage 3"
     ) {
       if (
-        userRole !== "Finance" &&
-        userRole !== "Admin"
+        userRole !== "finance" &&
+        userRole !== "admin"
       ) {
         return res.status(403).json({
-          message:
-            "Only Finance/Admin can approve Stage 3",
+          message: "Only Finance/Admin can approve Stage 3",
         });
       }
 
@@ -203,11 +202,34 @@ exports.updateDocumentStatus = async (req, res) => {
     });
   }
 };
+    const updatedDocument = await prisma.document.update({
+      where: {
+        id: Number(id),
+      },
+      data: {
+        status: newStatus,
+      },
+    });
+
+    res.json({
+      message: "Document status updated.",
+      document: updatedDocument,
+    });
+
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      message: "Failed to update document status.",
+    });
+  }
+};
 
 exports.getDocuments = async (req, res) => {
   try {
     const role = req.user.role?.toLowerCase();
     const userId = req.user.id;
+    console.log("ROLE FROM TOKEN:", req.user.role);
 
     let documents;
 
@@ -225,15 +247,17 @@ exports.getDocuments = async (req, res) => {
 
     // Reviewer sees only Stage 1 documents
     else if (role === "reviewer") {
-      documents = await prisma.document.findMany({
-        where: {
-          status: "Pending Stage 1",
-        },
-        orderBy: {
-          createdAt: "desc",
-        },
-      });
-    }
+  documents = await prisma.document.findMany({
+    where: {
+      status: "Pending Stage 1",
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+
+  console.log("Reviewer sees:", documents.length);
+}
 
     // Manager sees only Stage 2 documents
     else if (role === "manager") {
