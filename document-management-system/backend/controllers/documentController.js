@@ -206,11 +206,36 @@ exports.updateDocumentStatus = async (req, res) => {
 
 exports.getDocuments = async (req, res) => {
   try {
-    const documents = await prisma.document.findMany({
-      orderBy: {
-        createdAt: "desc",
-      },
-    });
+    console.log("REQ.USER:", req.user);
+
+    const role = req.user.role?.toLowerCase();
+    const userId = req.user.id;
+
+    console.log("ROLE:", role);
+    console.log("USER ID:", userId);
+
+    let documents;
+
+    if (role === "user") {
+      documents = await prisma.document.findMany({
+        where: {
+          uploadedById: userId,
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+      });
+
+      console.log("USER DOCUMENTS:", documents.length);
+    } else {
+      documents = await prisma.document.findMany({
+        orderBy: {
+          createdAt: "desc",
+        },
+      });
+
+      console.log("ALL DOCUMENTS:", documents.length);
+    }
 
     res.json(documents);
 
@@ -222,7 +247,6 @@ exports.getDocuments = async (req, res) => {
     });
   }
 };
-
 exports.getStats = async (req, res) => {
   try {
     const total = await prisma.document.count();
