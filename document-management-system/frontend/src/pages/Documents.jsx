@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import api from "../services/api";
 import "../styles/documents.css";
+import Navbar from "../components/Navbar";
 
 
 function Documents() {
@@ -82,15 +83,42 @@ function Documents() {
   });
 
 
-  return (
+    return (
+  <>
+    <Navbar />
     <div className="documents">
-     <h2>
-  {role === "user" && "📄 My Documents"}
-  {role === "reviewer" && "✅ Documents Awaiting Review"}
-  {role === "manager" && "📋 Documents Awaiting Manager Approval"}
-  {role === "finance" && "💰 Documents Awaiting Finance Approval"}
-  {role === "admin" && "📄 All Documents"}
-</h2>
+    <div className="page-header">
+  <div>
+    <h1>
+      {role === "user" && "📄 My Documents"}
+      {role === "reviewer" && "✅ Documents Awaiting Review"}
+      {role === "manager" && "📋 Manager Approval Queue"}
+      {role === "finance" && "💰 Finance Approval Queue"}
+      {role === "admin" && "📄 All Documents"}
+    </h1>
+
+    <p>
+      {role === "user" &&
+        "View and track documents you have uploaded."}
+
+      {role === "reviewer" &&
+        "Review documents awaiting first-level approval."}
+
+      {role === "manager" &&
+        "Approve documents that have passed reviewer validation."}
+
+      {role === "finance" &&
+        "Perform final financial approval of documents."}
+
+      {role === "admin" &&
+        "Monitor and manage all documents across the system."}
+    </p>
+  </div>
+
+  <div className="role-badge">
+    {role.toUpperCase()}
+  </div>
+</div>
 
 <div className="summary-cards">
 
@@ -228,13 +256,13 @@ function Documents() {
     {doc.status}
   </span>
 </td>
-              <td >
-                {doc.vendor || "-"}
-              </td>
               <td>
   {doc.uploadedBy?.name || "-"}
 </td>
 
+<td>
+  {doc.vendor || "-"}
+</td>
 
               <td >
                 {doc.invoiceNumber || "-"}
@@ -373,7 +401,8 @@ console.log({
       </div>
     
     </div>
-  );
+</>
+);
 }
 
 export default Documents;
